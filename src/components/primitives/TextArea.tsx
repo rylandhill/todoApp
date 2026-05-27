@@ -4,6 +4,9 @@ interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   label: string
 }
 
+/**
+ * Labeled textarea primitive for multiline input.
+ */
 export const TextArea = ({ label, id, className = '', ...props }: TextAreaProps) => {
   return (
     <label htmlFor={id} className="field">

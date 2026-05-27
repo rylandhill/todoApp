@@ -5,6 +5,9 @@ interface TooltipProps {
   content: string
 }
 
+/**
+ * Simple inline informational tooltip block.
+ */
 export const Tooltip = ({ label, content }: PropsWithChildren<TooltipProps>) => {
   return (
     <div className="tooltip">

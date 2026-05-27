@@ -6,6 +6,9 @@ interface PriorityHeaderProps {
   onChangeColor: (priority: number, color: string) => void
 }
 
+/**
+ * Renders a priority section title and color picker trigger.
+ */
 export const PriorityHeader = ({ priority, color, onChangeColor }: PriorityHeaderProps) => {
   const colorInputRef = useRef<HTMLInputElement | null>(null)
 

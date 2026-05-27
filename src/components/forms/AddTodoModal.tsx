@@ -21,15 +21,28 @@ export const AddTodoModal = ({ isOpen, onClose }: AddTodoModalProps) => {
   const [title, setTitle] = useState(INITIAL_FORM_STATE.title)
   const [description, setDescription] = useState(INITIAL_FORM_STATE.description)
   const [priority, setPriority] = useState(INITIAL_FORM_STATE.priority)
-  const [error, setError] = useState('')
 
   const canSubmit = useMemo(() => title.trim().length > 0 && priority.trim().length > 0, [priority, title])
+  const priorityValidationMessage = useMemo(() => {
+    const trimmed = priority.trim()
+    if (trimmed.length === 0) {
+      return ''
+    }
 
+    const parsedPriority = Number.parseInt(trimmed, 10)
+    const isValidPositiveInteger =
+      Number.isInteger(parsedPriority) && parsedPriority > 0 && `${parsedPriority}` === trimmed
+
+    return isValidPositiveInteger ? '' : 'Priority must be a positive integer.'
+  }, [priority])
+
+  /**
+   * Resets form state after successful creation.
+   */
   const resetState = () => {
     setTitle(INITIAL_FORM_STATE.title)
     setDescription(INITIAL_FORM_STATE.description)
     setPriority(INITIAL_FORM_STATE.priority)
-    setError('')
   }
 
   useEffect(() => {
@@ -37,6 +50,7 @@ export const AddTodoModal = ({ isOpen, onClose }: AddTodoModalProps) => {
       return undefined
     }
 
+    // Support keyboard dismissal while the modal is open.
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         onClose()
@@ -55,12 +69,14 @@ export const AddTodoModal = ({ isOpen, onClose }: AddTodoModalProps) => {
 
   const handleClose = () => onClose()
 
+  /**
+   * Validates and submits a new todo entry.
+   */
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const parsedPriority = Number.parseInt(priority, 10)
+    const parsedPriority = Number.parseInt(priority.trim(), 10)
 
-    if (!Number.isInteger(parsedPriority) || parsedPriority <= 0) {
-      setError('Priority must be a positive integer.')
+    if (priorityValidationMessage) {
       return
     }
 
@@ -124,7 +140,7 @@ export const AddTodoModal = ({ isOpen, onClose }: AddTodoModalProps) => {
             required
           />
 
-          {error ? <p className="error-text">{error}</p> : null}
+          {priorityValidationMessage ? <p className="error-text">{priorityValidationMessage}</p> : null}
 
           <div className="form__footer">
             <Button type="submit" disabled={!canSubmit}>

@@ -13,11 +13,17 @@ const AUTO_COLOR_PALETTE = [
   '#6366F1',
 ]
 
+/**
+ * Normalizes user color input into a canonical uppercase hex value.
+ */
 export const normalizeHexColor = (value: string): string => {
   const trimmed = value.trim().toUpperCase()
   return trimmed.startsWith('#') ? trimmed : `#${trimmed}`
 }
 
+/**
+ * Selects the next available color that is not currently used.
+ */
 export const pickUnusedColor = (usedColors: readonly string[]): string => {
   const normalizedUsed = new Set(usedColors.map(normalizeHexColor))
   const fromPalette = AUTO_COLOR_PALETTE.find(

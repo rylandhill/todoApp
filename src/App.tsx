@@ -7,11 +7,17 @@ import { TodoProvider } from './context/TodoContext'
 import { useTodos } from './hooks/useTodos'
 import type { TodoItem } from './types/todo'
 
+/**
+ * Internal app composition that consumes todo context.
+ */
 const TodoApp = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [todoPendingDelete, setTodoPendingDelete] = useState<TodoItem | null>(null)
   const { todos, deleteTodo, updatePriorityColor } = useTodos()
 
+  /**
+   * Confirms deletion for the selected todo.
+   */
   const handleDeleteConfirm = () => {
     if (todoPendingDelete) {
       deleteTodo(todoPendingDelete.id)
@@ -37,6 +43,9 @@ const TodoApp = () => {
   )
 }
 
+/**
+ * Root application component with TodoProvider.
+ */
 function App() {
   return (
     <TodoProvider>

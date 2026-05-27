@@ -3,7 +3,13 @@ import userEvent from '@testing-library/user-event'
 import { describe, expect, it } from 'vitest'
 import App from './App'
 
+/**
+ * Integration-style UI tests for main todo flows.
+ */
 describe('Todo app flow', () => {
+  /**
+   * Verifies add/delete behavior and missing-priority updates.
+   */
   it('creates and deletes a todo while updating missing priorities', async () => {
     const user = userEvent.setup()
     render(<App />)
@@ -29,6 +35,9 @@ describe('Todo app flow', () => {
     expect(screen.queryByText('Write interview summary')).not.toBeInTheDocument()
   })
 
+  /**
+   * Ensures add-form draft survives backdrop close/open cycle.
+   */
   it('keeps form values when modal is closed by backdrop click', async () => {
     const user = userEvent.setup()
     render(<App />)

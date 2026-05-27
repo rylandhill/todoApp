@@ -7,6 +7,9 @@ interface DeleteConfirmModalProps {
   onConfirm: () => void
 }
 
+/**
+ * Modal that confirms destructive todo deletion.
+ */
 export const DeleteConfirmModal = ({
   isOpen,
   title,

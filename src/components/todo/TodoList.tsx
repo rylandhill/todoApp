@@ -8,6 +8,9 @@ interface TodoListProps {
   onUpdatePriorityColor: (priority: number, color: string) => void
 }
 
+/**
+ * Renders todos grouped by priority in ascending order.
+ */
 export const TodoList = ({ todos, onDelete, onUpdatePriorityColor }: TodoListProps) => {
   if (todos.length === 0) {
     return <p className="empty-state">No todos yet. Add your first task to get started.</p>

@@ -6,6 +6,9 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant
 }
 
+/**
+ * Shared button primitive with project variants.
+ */
 export const Button = ({
   children,
   variant = 'primary',

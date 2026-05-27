@@ -23,7 +23,7 @@ A local-only Todo app focused on frontend architecture and user experience.
 - npm: `10.9.4`
 - React: `19.2.6`
 - Vite: `8.0.12`
-- TypeScript: `6.0.2`
+- TypeScript: `6.0.2`n
 - ESLint: `10.3.0`
 - Vitest + Testing Library for unit/UI tests
 

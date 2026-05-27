@@ -6,6 +6,9 @@ interface TodoCardProps {
   onDelete: (todo: TodoItem) => void
 }
 
+/**
+ * Displays a single todo card with delete action.
+ */
 export const TodoCard = ({ todo, onDelete }: TodoCardProps) => {
   return (
     <article className="todo-card" style={{ borderColor: todo.color }}>

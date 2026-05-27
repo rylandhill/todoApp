@@ -1,3 +1,6 @@
+/**
+ * Returns all missing positive priorities between 1 and the current max.
+ */
 export const getMissingPriorities = (priorities: readonly number[]): number[] => {
   if (priorities.length === 0) {
     return []
@@ -21,6 +24,9 @@ export const getMissingPriorities = (priorities: readonly number[]): number[] =>
   return missing
 }
 
+/**
+ * Compresses sorted priority values into display-friendly ranges.
+ */
 export const compressPriorityRanges = (priorities: readonly number[]): string[] => {
   if (priorities.length === 0) {
     return []
@@ -54,6 +60,9 @@ export const compressPriorityRanges = (priorities: readonly number[]): string[] 
   return ranges
 }
 
+/**
+ * Formats missing priorities as a comma-separated range string.
+ */
 export const formatMissingPriorityRanges = (priorities: readonly number[]): string => {
   const compressed = compressPriorityRanges(priorities)
   return compressed.length > 0 ? compressed.join(', ') : 'None'

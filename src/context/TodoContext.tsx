@@ -17,6 +17,9 @@ const initialState: TodoState = {
   todos: [],
 }
 
+/**
+ * Handles all state transitions for todo operations.
+ */
 const todoReducer = (state: TodoState, action: TodoAction): TodoState => {
   switch (action.type) {
     case TodoActionType.Add:
@@ -43,6 +46,9 @@ const todoReducer = (state: TodoState, action: TodoAction): TodoState => {
   }
 }
 
+/**
+ * Creates a stable todo id for browser and fallback environments.
+ */
 const createTodoId = (): string => {
   if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
     return crypto.randomUUID()
@@ -50,6 +56,9 @@ const createTodoId = (): string => {
   return `${Date.now()}-${Math.random().toString(16).slice(2)}`
 }
 
+/**
+ * Provides todo state and memoized selectors/actions to the app tree.
+ */
 export const TodoProvider = ({ children }: PropsWithChildren) => {
   const [state, dispatch] = useReducer(todoReducer, initialState)
 
@@ -68,6 +77,7 @@ export const TodoProvider = ({ children }: PropsWithChildren) => {
     [missingPriorities],
   )
 
+  // Priority colors are derived from existing todos to keep same-priority colors consistent.
   const priorityColorMap = useMemo(() => {
     return state.todos.reduce<Record<number, string>>((accumulator, todo) => {
       if (!accumulator[todo.priority]) {
@@ -82,6 +92,7 @@ export const TodoProvider = ({ children }: PropsWithChildren) => {
     [priorityColorMap],
   )
 
+  // Add flow reuses existing priority color when available; otherwise uses provided or auto color.
   const addTodo = useCallback(
     (input: NewTodoInput) => {
       const existingPriorityColor = priorityColorMap[input.priority]
@@ -108,6 +119,7 @@ export const TodoProvider = ({ children }: PropsWithChildren) => {
     [priorityColorMap, usedColors],
   )
 
+  // Deletes a single todo by id.
   const deleteTodo = useCallback((id: string) => {
     dispatch({
       type: TodoActionType.Delete,
@@ -115,6 +127,7 @@ export const TodoProvider = ({ children }: PropsWithChildren) => {
     })
   }, [])
 
+  // Applies a color update to all todos with a given priority.
   const updatePriorityColor = useCallback((priority: number, color: string) => {
     dispatch({
       type: TodoActionType.UpdatePriorityColor,

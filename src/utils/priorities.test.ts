@@ -5,6 +5,9 @@ import {
   getMissingPriorities,
 } from './priorities'
 
+/**
+ * Unit tests for priority utility behavior.
+ */
 describe('priority utilities', () => {
   it('returns missing priorities up to max used value', () => {
     expect(getMissingPriorities([1, 3, 5, 5, 7, 12])).toEqual([2, 4, 6, 8, 9, 10, 11])

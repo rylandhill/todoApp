@@ -1,6 +1,9 @@
 import { createContext } from 'react'
 import type { NewTodoInput, TodoItem } from '../types/todo'
 
+/**
+ * Contract for shared todo state, selectors, and mutation actions.
+ */
 export interface TodoContextValue {
   todos: TodoItem[]
   usedPriorities: number[]
@@ -13,4 +16,7 @@ export interface TodoContextValue {
   updatePriorityColor: (priority: number, color: string) => void
 }
 
+/**
+ * Context container used by TodoProvider and consumer hooks.
+ */
 export const TodoContext = createContext<TodoContextValue | null>(null)
