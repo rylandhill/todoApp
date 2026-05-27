@@ -1,4 +1,10 @@
-import { useEffect, useMemo, useState, type FormEvent } from 'react'
+import {
+  useEffect,
+  useMemo,
+  useState,
+  type FormEvent,
+  type MouseEventHandler,
+} from 'react'
 import { Tooltip } from '../primitives/Tooltip'
 import { Input } from '../primitives/Input'
 import { TextArea } from '../primitives/TextArea'
@@ -70,6 +76,15 @@ export const AddTodoModal = ({ isOpen, onClose }: AddTodoModalProps) => {
   const handleClose = () => onClose()
 
   /**
+   * Closes only when the initial mouse down happens on the overlay itself.
+   */
+  const handleOverlayMouseDown: MouseEventHandler<HTMLDivElement> = (event) => {
+    if (event.target === event.currentTarget) {
+      handleClose()
+    }
+  }
+
+  /**
    * Validates and submits a new todo entry.
    */
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -91,7 +106,11 @@ export const AddTodoModal = ({ isOpen, onClose }: AddTodoModalProps) => {
   }
 
   return (
-    <div className="modal-overlay" role="presentation" onClick={handleClose}>
+    <div
+      className="modal-overlay"
+      role="presentation"
+      onMouseDown={handleOverlayMouseDown}
+    >
       <section
         className="modal"
         role="dialog"
@@ -101,9 +120,6 @@ export const AddTodoModal = ({ isOpen, onClose }: AddTodoModalProps) => {
       >
         <div className="modal__header">
           <h2 id="add-todo-heading">Add Todo</h2>
-          <Button variant="secondary" onClick={handleClose} aria-label="Close add todo dialog">
-            Close
-          </Button>
         </div>
 
         <Tooltip
@@ -143,6 +159,9 @@ export const AddTodoModal = ({ isOpen, onClose }: AddTodoModalProps) => {
           {priorityValidationMessage ? <p className="error-text">{priorityValidationMessage}</p> : null}
 
           <div className="form__footer">
+            <Button variant="secondary" onClick={handleClose} aria-label="Close add todo dialog">
+              Close
+            </Button>
             <Button type="submit" disabled={!canSubmit}>
               Create Todo
             </Button>

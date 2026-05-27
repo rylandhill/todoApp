@@ -1,4 +1,5 @@
 import { Button } from '../primitives/Button'
+import type { MouseEventHandler } from 'react'
 
 interface DeleteConfirmModalProps {
   isOpen: boolean
@@ -20,8 +21,21 @@ export const DeleteConfirmModal = ({
     return null
   }
 
+  /**
+   * Closes only when the initial mouse down happens on the overlay itself.
+   */
+  const handleOverlayMouseDown: MouseEventHandler<HTMLDivElement> = (event) => {
+    if (event.target === event.currentTarget) {
+      onCancel()
+    }
+  }
+
   return (
-    <div className="modal-overlay" role="presentation" onClick={onCancel}>
+    <div
+      className="modal-overlay"
+      role="presentation"
+      onMouseDown={handleOverlayMouseDown}
+    >
       <section
         className="modal modal--confirm"
         role="dialog"
