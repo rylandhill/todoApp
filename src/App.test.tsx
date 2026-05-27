@@ -24,6 +24,21 @@ describe('Todo app flow', () => {
     await user.click(screen.getByRole('button', { name: /close add todo dialog/i }))
 
     await user.click(screen.getByRole('button', { name: /delete write interview summary/i }))
+    expect(screen.getByText(/are you sure you want to delete/i)).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: /^delete$/i }))
     expect(screen.queryByText('Write interview summary')).not.toBeInTheDocument()
+  })
+
+  it('keeps form values when modal is closed by backdrop click', async () => {
+    const user = userEvent.setup()
+    render(<App />)
+
+    await user.click(screen.getByRole('button', { name: /add todo/i }))
+    await user.type(screen.getByLabelText('Title'), 'Persist me')
+
+    await user.click(screen.getByRole('presentation'))
+
+    await user.click(screen.getByRole('button', { name: /add todo/i }))
+    expect(screen.getByLabelText('Title')).toHaveValue('Persist me')
   })
 })

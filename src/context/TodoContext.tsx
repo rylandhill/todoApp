@@ -29,6 +29,15 @@ const todoReducer = (state: TodoState, action: TodoAction): TodoState => {
         ...state,
         todos: state.todos.filter((todo) => todo.id !== action.payload.id),
       }
+    case TodoActionType.UpdatePriorityColor:
+      return {
+        ...state,
+        todos: state.todos.map((todo) =>
+          todo.priority === action.payload.priority
+            ? { ...todo, color: action.payload.color }
+            : todo,
+        ),
+      }
     default:
       return state
   }
@@ -59,14 +68,28 @@ export const TodoProvider = ({ children }: PropsWithChildren) => {
     [missingPriorities],
   )
 
+  const priorityColorMap = useMemo(() => {
+    return state.todos.reduce<Record<number, string>>((accumulator, todo) => {
+      if (!accumulator[todo.priority]) {
+        accumulator[todo.priority] = todo.color.toUpperCase()
+      }
+      return accumulator
+    }, {})
+  }, [state.todos])
+
   const usedColors = useMemo(
-    () => state.todos.map((todo) => todo.color.toUpperCase()),
-    [state.todos],
+    () => Object.values(priorityColorMap),
+    [priorityColorMap],
   )
 
   const addTodo = useCallback(
     (input: NewTodoInput) => {
-      const resolvedColor = input.color ? input.color.toUpperCase() : pickUnusedColor(usedColors)
+      const existingPriorityColor = priorityColorMap[input.priority]
+      const resolvedColor = existingPriorityColor
+        ? existingPriorityColor
+        : input.color
+          ? input.color.toUpperCase()
+          : pickUnusedColor(usedColors)
 
       const nextTodo: TodoItem = {
         id: createTodoId(),
@@ -82,13 +105,23 @@ export const TodoProvider = ({ children }: PropsWithChildren) => {
         payload: nextTodo,
       })
     },
-    [usedColors],
+    [priorityColorMap, usedColors],
   )
 
   const deleteTodo = useCallback((id: string) => {
     dispatch({
       type: TodoActionType.Delete,
       payload: { id },
+    })
+  }, [])
+
+  const updatePriorityColor = useCallback((priority: number, color: string) => {
+    dispatch({
+      type: TodoActionType.UpdatePriorityColor,
+      payload: {
+        priority,
+        color: color.toUpperCase(),
+      },
     })
   }, [])
 
@@ -99,15 +132,19 @@ export const TodoProvider = ({ children }: PropsWithChildren) => {
       missingPriorities,
       missingPriorityRangesText,
       usedColors,
+      priorityColorMap,
       addTodo,
       deleteTodo,
+      updatePriorityColor,
     }),
     [
       addTodo,
       deleteTodo,
       missingPriorities,
       missingPriorityRangesText,
+      priorityColorMap,
       state.todos,
+      updatePriorityColor,
       usedColors,
       usedPriorities,
     ],

@@ -1,10 +1,9 @@
-import { useMemo, useState, type FormEvent } from 'react'
+import { useEffect, useMemo, useState, type FormEvent } from 'react'
 import { Tooltip } from '../primitives/Tooltip'
 import { Input } from '../primitives/Input'
 import { TextArea } from '../primitives/TextArea'
 import { Button } from '../primitives/Button'
 import { useTodos } from '../../hooks/useTodos'
-import { normalizeHexColor } from '../../utils/colors'
 
 interface AddTodoModalProps {
   isOpen: boolean
@@ -15,8 +14,6 @@ const INITIAL_FORM_STATE = {
   title: '',
   description: '',
   priority: '',
-  color: '#3B82F6',
-  useCustomColor: false,
 }
 
 export const AddTodoModal = ({ isOpen, onClose }: AddTodoModalProps) => {
@@ -24,29 +21,39 @@ export const AddTodoModal = ({ isOpen, onClose }: AddTodoModalProps) => {
   const [title, setTitle] = useState(INITIAL_FORM_STATE.title)
   const [description, setDescription] = useState(INITIAL_FORM_STATE.description)
   const [priority, setPriority] = useState(INITIAL_FORM_STATE.priority)
-  const [color, setColor] = useState(INITIAL_FORM_STATE.color)
-  const [useCustomColor, setUseCustomColor] = useState(INITIAL_FORM_STATE.useCustomColor)
   const [error, setError] = useState('')
 
   const canSubmit = useMemo(() => title.trim().length > 0 && priority.trim().length > 0, [priority, title])
-
-  if (!isOpen) {
-    return null
-  }
 
   const resetState = () => {
     setTitle(INITIAL_FORM_STATE.title)
     setDescription(INITIAL_FORM_STATE.description)
     setPriority(INITIAL_FORM_STATE.priority)
-    setColor(INITIAL_FORM_STATE.color)
-    setUseCustomColor(INITIAL_FORM_STATE.useCustomColor)
     setError('')
   }
 
-  const handleClose = () => {
-    resetState()
-    onClose()
+  useEffect(() => {
+    if (!isOpen) {
+      return undefined
+    }
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose()
+      }
+    }
+
+    window.addEventListener('keydown', handleEscape)
+    return () => {
+      window.removeEventListener('keydown', handleEscape)
+    }
+  }, [isOpen, onClose])
+
+  if (!isOpen) {
+    return null
   }
+
+  const handleClose = () => onClose()
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -61,10 +68,10 @@ export const AddTodoModal = ({ isOpen, onClose }: AddTodoModalProps) => {
       title,
       description,
       priority: parsedPriority,
-      color: useCustomColor ? normalizeHexColor(color) : undefined,
     })
 
-    handleClose()
+    resetState()
+    onClose()
   }
 
   return (
@@ -116,28 +123,6 @@ export const AddTodoModal = ({ isOpen, onClose }: AddTodoModalProps) => {
             placeholder="1"
             required
           />
-
-          <label className="checkbox-row" htmlFor="todo-use-custom-color">
-            <input
-              id="todo-use-custom-color"
-              type="checkbox"
-              checked={useCustomColor}
-              onChange={(event) => setUseCustomColor(event.target.checked)}
-            />
-            <span>Pick custom trim color</span>
-          </label>
-
-          {useCustomColor ? (
-            <Input
-              id="todo-color"
-              label="Card color"
-              type="color"
-              value={color}
-              onChange={(event) => setColor(event.target.value)}
-            />
-          ) : (
-            <p className="hint">No color selected: app will auto-assign an unused color.</p>
-          )}
 
           {error ? <p className="error-text">{error}</p> : null}
 

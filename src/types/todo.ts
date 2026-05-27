@@ -23,3 +23,7 @@ export interface TodoState {
 export type TodoAction =
   | { type: typeof TodoActionType.Add; payload: TodoItem }
   | { type: typeof TodoActionType.Delete; payload: { id: string } }
+  | {
+      type: typeof TodoActionType.UpdatePriorityColor
+      payload: { priority: number; color: string }
+    }
