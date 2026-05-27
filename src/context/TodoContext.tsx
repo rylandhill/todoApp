@@ -87,11 +87,6 @@ export const TodoProvider = ({ children }: PropsWithChildren) => {
     }, {})
   }, [state.todos])
 
-  const usedColors = useMemo(
-    () => Object.values(priorityColorMap),
-    [priorityColorMap],
-  )
-
   // Add flow reuses existing priority color when available; otherwise uses provided or auto color.
   const addTodo = useCallback(
     (input: NewTodoInput) => {
@@ -100,7 +95,7 @@ export const TodoProvider = ({ children }: PropsWithChildren) => {
         ? existingPriorityColor
         : input.color
           ? input.color.toUpperCase()
-          : pickUnusedColor(usedColors)
+          : pickUnusedColor()
 
       const nextTodo: TodoItem = {
         id: createTodoId(),
@@ -116,7 +111,7 @@ export const TodoProvider = ({ children }: PropsWithChildren) => {
         payload: nextTodo,
       })
     },
-    [priorityColorMap, usedColors],
+    [priorityColorMap],
   )
 
   // Deletes a single todo by id.
@@ -144,7 +139,6 @@ export const TodoProvider = ({ children }: PropsWithChildren) => {
       usedPriorities,
       missingPriorities,
       missingPriorityRangesText,
-      usedColors,
       priorityColorMap,
       addTodo,
       deleteTodo,
@@ -158,7 +152,6 @@ export const TodoProvider = ({ children }: PropsWithChildren) => {
       priorityColorMap,
       state.todos,
       updatePriorityColor,
-      usedColors,
       usedPriorities,
     ],
   )

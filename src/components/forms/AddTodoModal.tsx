@@ -28,7 +28,7 @@ export const AddTodoModal = ({ isOpen, onClose }: AddTodoModalProps) => {
   const [description, setDescription] = useState(INITIAL_FORM_STATE.description)
   const [priority, setPriority] = useState(INITIAL_FORM_STATE.priority)
 
-  const canSubmit = useMemo(() => title.trim().length > 0 && priority.trim().length > 0, [priority, title])
+  const canSubmit = useMemo(() => title.trim().length && priority.trim().length, [priority, title])
   const priorityValidationMessage = useMemo(() => {
     const trimmed = priority.trim()
     if (trimmed.length === 0) {

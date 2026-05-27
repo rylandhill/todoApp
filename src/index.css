@@ -275,24 +275,6 @@ body {
   font-size: 0.95rem;
 }
 
-.checkbox-row {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-.hint {
-  margin: 0;
-  color: var(--color-text-secondary);
-  font-size: 0.9rem;
-}
-
-.color-picker-row {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-}
-
 .color-preview {
   width: 44px;
   height: 44px;

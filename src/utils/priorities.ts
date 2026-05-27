@@ -65,5 +65,5 @@ export const compressPriorityRanges = (priorities: readonly number[]): string[] 
  */
 export const formatMissingPriorityRanges = (priorities: readonly number[]): string => {
   const compressed = compressPriorityRanges(priorities)
-  return compressed.length > 0 ? compressed.join(', ') : 'None'
+  return compressed.length ? compressed.join(', ') : 'None'
 }
