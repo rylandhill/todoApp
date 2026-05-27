@@ -1,0 +1,255 @@
+:root {
+  --color-bg: #0f1115;
+  --color-surface: #171a21;
+  --color-surface-hover: #1f2330;
+  --color-border: #2c3140;
+  --color-text-primary: #eceef4;
+  --color-text-secondary: #9ea7bc;
+  --color-accent: #4f8cff;
+  --color-danger: #f87171;
+  --color-focus: #84a9ff;
+  --shadow-soft: 0 8px 28px rgba(0, 0, 0, 0.35);
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
+  background: radial-gradient(circle at top, #1a2030, var(--color-bg));
+  color: var(--color-text-primary);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.app-shell {
+  width: min(1100px, 100%);
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-5) 40px;
+}
+
+.app-shell__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.app-shell__title {
+  margin: 0;
+  font-size: clamp(1.4rem, 2.2vw, 2rem);
+}
+
+.button {
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 10px 14px;
+  transition: all 120ms ease-out;
+}
+
+.button:focus-visible,
+.field__control:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.button--primary {
+  background: var(--color-accent);
+  color: #0c1322;
+}
+
+.button--secondary {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+  color: var(--color-text-primary);
+}
+
+.button--danger {
+  background: rgba(248, 113, 113, 0.14);
+  border-color: rgba(248, 113, 113, 0.4);
+  color: #ffc1c1;
+}
+
+.button:hover {
+  transform: translateY(-1px);
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+}
+
+.todo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--space-4);
+}
+
+.todo-card {
+  border: 2px solid;
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  padding: var(--space-4);
+  box-shadow: var(--shadow-soft);
+}
+
+.todo-card__header {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  align-items: flex-start;
+}
+
+.todo-card__title {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.todo-card__priority {
+  background: rgba(79, 140, 255, 0.2);
+  color: #b8d0ff;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  padding: 3px 10px;
+  white-space: nowrap;
+}
+
+.todo-card__description {
+  margin: var(--space-3) 0 var(--space-4);
+  color: var(--color-text-secondary);
+  line-height: 1.45;
+  min-height: 52px;
+}
+
+.todo-card__footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.empty-state {
+  margin: 32px 0;
+  color: var(--color-text-secondary);
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 10, 15, 0.76);
+  display: grid;
+  place-items: center;
+  padding: var(--space-5);
+}
+
+.modal {
+  width: min(560px, 100%);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+}
+
+.modal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-4);
+}
+
+.modal__header h2 {
+  margin: 0;
+}
+
+.form {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.field {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.field__label {
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+.field__control {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-hover);
+  color: var(--color-text-primary);
+  font: inherit;
+  padding: 10px 12px;
+}
+
+.field__control--textarea {
+  resize: vertical;
+}
+
+.tooltip {
+  margin-bottom: var(--space-4);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  display: grid;
+  gap: 6px;
+}
+
+.tooltip__label {
+  font-size: 0.82rem;
+  color: var(--color-text-secondary);
+}
+
+.tooltip__content {
+  font-family: ui-monospace, Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
+  font-size: 0.95rem;
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.hint {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+.error-text {
+  margin: 0;
+  color: var(--color-danger);
+  font-size: 0.9rem;
+}
+
+.form__footer {
+  display: flex;
+  justify-content: flex-end;
+}
